@@ -537,7 +537,7 @@ export default function Home() {
                             fill
                             className="object-contain p-3 sm:p-4 group-hover:scale-105 transition duration-300"
                           />
-                          <span className="absolute top-2.5 left-2.5 rounded bg-black/75 px-2 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
+                          <span className="absolute top-2.5 left-2.5 rounded-md bg-black/75 px-2 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
                             {project.badgePrefix}
                           </span>
                         </div>
@@ -557,10 +557,11 @@ export default function Home() {
                             {project.stack.map((stk) => (
                               <span
                                 key={stk}
-                                className="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-black"
-                                style={getTechBrandStyle(stk)}
+                                className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-2 py-0.5 text-[10px] font-black text-[var(--text-muted)]"
                               >
-                                <TechIcon name={stk} size={10} />
+                                <span style={{ color: getTechBrandStyle(stk).color }} className="flex items-center justify-center">
+                                  <TechIcon name={stk} size={10} />
+                                </span>
                                 {stk}
                               </span>
                             ))}
@@ -695,7 +696,7 @@ export default function Home() {
                           fill
                           className="object-contain p-3 sm:p-4 group-hover:scale-105 transition duration-300"
                         />
-                        <span className="absolute top-2.5 left-2.5 rounded bg-black/75 px-2 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
+                        <span className="absolute top-2.5 left-2.5 rounded-md bg-black/75 px-2 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
                           {project.badgePrefix}
                         </span>
                       </div>
@@ -715,10 +716,11 @@ export default function Home() {
                           {project.stack.map((stk) => (
                             <span
                               key={stk}
-                              className="inline-flex items-center gap-1 rounded-md border px-2 py-0.5 text-[10px] font-black"
-                              style={getTechBrandStyle(stk)}
+                              className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-2 py-0.5 text-[10px] font-black text-[var(--text-muted)]"
                             >
-                              <TechIcon name={stk} size={10} />
+                              <span style={{ color: getTechBrandStyle(stk).color }} className="flex items-center justify-center">
+                                <TechIcon name={stk} size={10} />
+                              </span>
                               {stk}
                             </span>
                           ))}

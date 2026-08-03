@@ -3,7 +3,7 @@
 import { Project } from "@/lib/portfolio";
 import Image from "next/image";
 import { useState } from "react";
-import { X, ExternalLink, Calendar, Globe, Code2, Image as ImageIcon, ChevronLeft, ChevronRight } from "lucide-react";
+import { X, ExternalLink, Calendar, Globe, Code2, Image as ImageIcon, ChevronLeft, ChevronRight, Layers, AppWindow } from "lucide-react";
 import { SiGithub } from "react-icons/si";
 import { TechIcon, getTechBrandStyle } from "@/lib/techIcons";
 
@@ -24,13 +24,6 @@ const projectBackgroundColors = [
 ];
 
 const projectTimeOrder = [6, 5, 4, 3, 2, 1];
-
-const roleBadgeStyles: Record<"fullstack" | "frontend", string> = {
-  fullstack:
-    "border-rose-200 bg-rose-50 text-rose-700 dark:border-rose-900/60 dark:bg-rose-950/30 dark:text-rose-300",
-  frontend:
-    "border-sky-200 bg-sky-50 text-sky-700 dark:border-sky-900/60 dark:bg-sky-950/30 dark:text-sky-300",
-};
 
 export default function ProjectModal({ project, onClose, lang = "English" }: ProjectModalProps) {
   const [previewIndex, setPreviewIndex] = useState(0);
@@ -73,7 +66,7 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
                 style={{ backgroundColor }}
               >
                 <Image src={project.thumbnailUrl} alt={project.title} fill className="object-contain p-3" />
-                <span className="absolute top-2.5 left-2.5 rounded bg-black/75 px-2.5 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
+                <span className="absolute top-2.5 left-2.5 rounded-md bg-black/75 px-2.5 py-0.5 text-[10px] font-black text-white backdrop-blur-md z-10">
                   {project.badgePrefix}
                 </span>
               </div>
@@ -116,11 +109,10 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
                     href={project.repoUrl}
                     target="_blank"
                     rel="noreferrer"
-                    className="flex items-center justify-center gap-2 rounded-xl border border-[var(--border-color)] bg-[var(--bg-main)] py-2 text-xs font-extrabold text-[var(--text-main)] hover:border-[var(--hover-gray)] hover:text-[var(--hover-gray)] transition cursor-pointer w-full"
+                    className="flex items-center justify-center gap-2 rounded-lg border border-[var(--border-color)] bg-[var(--bg-main)] py-2 text-xs font-extrabold text-[var(--text-main)] hover:border-[var(--hover-gray)] hover:text-[var(--hover-gray)] transition cursor-pointer w-full"
                   >
                     <SiGithub size={15} />
                     <span>{isIndo ? "LIHAT REPOSITORI" : "VIEW REPOSITORY"}</span>
-                    <ExternalLink size={12} />
                   </a>
                 )}
               </div>
@@ -144,10 +136,11 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
               {project.stack.map((tech) => (
                 <span
                   key={tech}
-                  className="inline-flex items-center gap-1.5 rounded-lg border px-3 py-1 font-montserrat text-xs font-black"
-                  style={getTechBrandStyle(tech)}
+                  className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-main)] px-3 py-1 font-montserrat text-xs font-black text-[var(--text-muted)]"
                 >
-                  <TechIcon name={tech} size={13} />
+                  <span style={{ color: getTechBrandStyle(tech).color }} className="flex items-center justify-center">
+                    <TechIcon name={tech} size={13} />
+                  </span>
                   {tech}
                 </span>
               ))}
@@ -159,8 +152,22 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
               Role
             </h3>
             <div className="flex flex-wrap gap-2">
-              <span className={`inline-flex items-center rounded-full border px-3 py-1 text-xs font-black ${roleBadgeStyles[project.role]}`}>
-                {project.role === "fullstack" ? "Fullstack Developer" : "Frontend Developer"}
+              <span className="inline-flex items-center gap-1.5 rounded-lg border border-[var(--border-color)] bg-[var(--bg-main)] px-3 py-1 font-montserrat text-xs font-black text-[var(--text-muted)]">
+                {project.role === "fullstack" ? (
+                  <>
+                    <span className="flex items-center justify-center text-rose-500">
+                      <Layers size={13} />
+                    </span>
+                    Fullstack Developer
+                  </>
+                ) : (
+                  <>
+                    <span className="flex items-center justify-center text-sky-500">
+                      <AppWindow size={13} />
+                    </span>
+                    Frontend Developer
+                  </>
+                )}
               </span>
             </div>
           </div>
@@ -174,7 +181,7 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
               <button
                 onClick={prevPreview}
                 disabled={!canNavigatePreview}
-                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] shadow-lg transition cursor-pointer hover:bg-[var(--hover-gray)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-[var(--bg-card)] disabled:hover:text-[var(--text-main)]"
+                className="absolute left-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] shadow-lg transition cursor-pointer hover:bg-[var(--hover-gray)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-[var(--bg-card)] disabled:hover:text-[var(--text-main)]"
               >
                 <ChevronLeft size={18} />
               </button>
@@ -182,7 +189,7 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
               <button
                 onClick={nextPreview}
                 disabled={!canNavigatePreview}
-                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] shadow-lg transition cursor-pointer hover:bg-[var(--hover-gray)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-[var(--bg-card)] disabled:hover:text-[var(--text-main)]"
+                className="absolute right-2 top-1/2 -translate-y-1/2 z-10 flex h-8 w-8 items-center justify-center rounded-lg border border-[var(--border-color)] bg-[var(--bg-card)] text-[var(--text-main)] shadow-lg transition cursor-pointer hover:bg-[var(--hover-gray)] hover:text-white disabled:cursor-not-allowed disabled:opacity-30 disabled:hover:bg-[var(--bg-card)] disabled:hover:text-[var(--text-main)]"
               >
                 <ChevronRight size={18} />
               </button>

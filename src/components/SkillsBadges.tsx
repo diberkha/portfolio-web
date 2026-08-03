@@ -105,7 +105,7 @@ export default function SkillsBadges({ skills }: SkillsBadgesProps) {
             </div>
 
             <div>
-              <span className="rounded-full bg-amber-500/20 px-3 py-1 text-xs font-black text-amber-500 uppercase tracking-wider">
+              <span className="rounded-lg bg-amber-500/20 px-3 py-1 text-xs font-black text-amber-500 uppercase tracking-wider">
                 {selectedSkill.rarity} Badge
               </span>
               <h3 className="font-montserrat text-xl font-black text-[var(--text-main)] mt-2">
@@ -122,7 +122,7 @@ export default function SkillsBadges({ skills }: SkillsBadgesProps) {
 
             <button
               onClick={() => setSelectedSkill(null)}
-              className="w-full rounded-xl bg-[var(--roblox-blue)] py-2 font-montserrat font-bold text-xs text-white hover:opacity-90 transition cursor-pointer"
+              className="w-full rounded-lg bg-[var(--roblox-blue)] py-2 font-montserrat font-bold text-xs text-white hover:opacity-90 transition cursor-pointer"
             >
               Close Badge Details
             </button>
