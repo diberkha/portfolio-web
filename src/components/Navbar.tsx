@@ -23,6 +23,7 @@ export default function Navbar({
   ];
   const scrollToSection = useCallback(
     (id: string, tab?: "about" | "creations") => {
+      document.body.setAttribute("data-scrolling", "true");
       setActiveSection(id);
       if (onNavigateToTab) onNavigateToTab(tab ?? "about");
       setTimeout(() => {
@@ -31,6 +32,9 @@ export default function Navbar({
           const y = el.getBoundingClientRect().top + window.scrollY - 100;
           window.scrollTo({ top: y, behavior: "smooth" });
         }
+        setTimeout(() => {
+          document.body.removeAttribute("data-scrolling");
+        }, 1000);
       }, 50);
       setMobileMenuOpen(false);
     },

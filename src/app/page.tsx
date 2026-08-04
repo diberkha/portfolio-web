@@ -114,6 +114,7 @@ export default function Home() {
   useEffect(() => {
     const observer = new IntersectionObserver(
       (entries) => {
+        if (document.body.getAttribute("data-scrolling") === "true") return;
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveSection(entry.target.id);
@@ -129,9 +130,10 @@ export default function Home() {
       if (section) observer.observe(section);
     });
     const handleScroll = () => {
+      if (document.body.getAttribute("data-scrolling") === "true") return;
       const bottom =
         Math.ceil(window.innerHeight + window.scrollY) >=
-        document.documentElement.scrollHeight;
+        document.documentElement.scrollHeight - 10;
       if (bottom && activeTab === "about") {
         setActiveSection("certifications");
       }
@@ -145,6 +147,7 @@ export default function Home() {
     };
   }, [activeTab]);
   const scrollToSection = (id: string) => {
+    document.body.setAttribute("data-scrolling", "true");
     setActiveTab("about");
     setActiveSection(id);
     setTimeout(() => {
@@ -153,6 +156,9 @@ export default function Home() {
         const y = el.getBoundingClientRect().top + window.scrollY - 100;
         window.scrollTo({ top: y, behavior: "smooth" });
       }
+      setTimeout(() => {
+        document.body.removeAttribute("data-scrolling");
+      }, 1000);
     }, 50);
   };
   const filteredProjects = data.projects.filter((p) => {
@@ -189,7 +195,17 @@ export default function Home() {
         />
         <main className="max-w-5xl mx-auto px-4 py-6 sm:px-6 space-y-8 pb-16">
           <section className="space-y-4">
-            <div className="relative h-44 sm:h-56 w-full rounded-2xl bg-[#D3D7DC] dark:bg-[#232527] border border-[var(--border-color)] overflow-hidden" />
+            <div className="relative w-full rounded-2xl bg-[#D3D7DC] dark:bg-[#232527] border border-[var(--border-color)] overflow-hidden">
+              <Image
+                src="/img/profile-banner.png"
+                alt="Profile Banner"
+                width={0}
+                height={0}
+                sizes="100vw"
+                style={{ width: "100%", height: "auto" }}
+                priority
+              />
+            </div>
             <div className="flex flex-col gap-3 pt-1">
               <div className="flex items-end justify-between gap-3">
                 <div className="flex items-end gap-3">
@@ -197,7 +213,7 @@ export default function Home() {
                     <div className="relative h-20 w-20 sm:h-28 sm:w-28 overflow-hidden rounded-full border-4 border-[var(--bg-main)] bg-[#D3D7DC] dark:bg-[#232527] shadow-md flex items-center justify-center">
                       {!avatarError ? (
                         <Image
-                          src="/img/avatar.png"
+                          src="/img/profile-avatar.png"
                           alt={data.profile.displayName}
                           fill
                           className="object-cover"
@@ -280,73 +296,24 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-              <div className="flex sm:hidden flex-wrap items-center gap-2">
-                <a
-                  href={data.contact.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="roblox-pill-btn flex-1 flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold"
-                >
-                  <SiGithub size={14} />
-                  <span>GitHub</span>
-                </a>
-                <a
-                  href={data.contact.linkedin}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="roblox-pill-btn flex-1 flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold"
-                >
-                  <FaLinkedin size={14} />
-                  <span>LinkedIn</span>
-                </a>
-                <div className="relative">
-                  <button
-                    onClick={() => setShowMoreContact(!showMoreContact)}
-                    className="roblox-pill-btn flex items-center justify-center px-2.5 cursor-pointer"
-                  >
-                    <MoreHorizontal size={16} />
-                  </button>
-                  {showMoreContact && (
-                    <div className="absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] p-3 shadow-xl z-50 animate-modal text-xs">
-                      <p className="font-bold text-[var(--text-main)] mb-2 border-b border-[var(--border-color)] pb-1">
-                        {isIndo ? "Kontak" : "Contacts"}
-                      </p>
-                      <a
-                        href={`mailto:${data.contact.email}`}
-                        className="flex items-center gap-2 py-1 text-[var(--text-muted)] hover:text-[var(--hover-gray)]"
-                      >
-                        <Mail size={14} />
-                        <span className="truncate">{data.contact.email}</span>
-                      </a>
-                      <a
-                        href={`tel:${data.contact.phone}`}
-                        className="flex items-center gap-2 py-1 text-[var(--text-muted)] hover:text-[var(--hover-gray)]"
-                      >
-                        <Phone size={14} />
-                        <span>{data.contact.phone}</span>
-                      </a>
-                    </div>
-                  )}
-                </div>
-              </div>
             </div>
-            <div className="flex flex-wrap items-center gap-2 text-xs font-bold">
+            <div className="flex items-center gap-2 text-xs font-bold overflow-x-auto no-scrollbar pb-1">
               <button
                 onClick={() => scrollToSection("experiences")}
-                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs"
+                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs whitespace-nowrap flex-shrink-0"
               >
                 {data.experiences.length}{" "}
                   {isIndo ? "Pengalaman" : "Job Experiences"}
               </button>
               <button
                 onClick={() => scrollToSection("projects")}
-                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs"
+                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs whitespace-nowrap flex-shrink-0"
               >
                 {data.projects.length} {isIndo ? "Proyek" : "Projects"}
               </button>
               <button
                 onClick={() => scrollToSection("certifications")}
-                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs"
+                className="rounded-lg bg-[var(--pill-bg)] hover:bg-[var(--hover-gray)] hover:text-white transition px-3.5 py-1 text-[var(--pill-text)] cursor-pointer shadow-xs whitespace-nowrap flex-shrink-0"
               >
                 {data.certificates.length}{" "}
                 {isIndo ? "Sertifikat" : "Certificates"}
@@ -385,6 +352,55 @@ export default function Home() {
                     ? "selengkapnya"
                     : "more"}
               </button>
+            </div>
+            <div className="flex sm:hidden flex-wrap items-center gap-2 pt-2">
+              <a
+                href={data.contact.github}
+                target="_blank"
+                rel="noreferrer"
+                className="roblox-pill-btn flex-1 flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold"
+              >
+                <SiGithub size={14} />
+                <span>GitHub</span>
+              </a>
+              <a
+                href={data.contact.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="roblox-pill-btn flex-1 flex items-center justify-center gap-1.5 cursor-pointer text-xs font-bold"
+              >
+                <FaLinkedin size={14} />
+                <span>LinkedIn</span>
+              </a>
+              <div className="relative">
+                <button
+                  onClick={() => setShowMoreContact(!showMoreContact)}
+                  className="roblox-pill-btn flex items-center justify-center px-2.5 cursor-pointer"
+                >
+                  <MoreHorizontal size={16} />
+                </button>
+                {showMoreContact && (
+                  <div className="absolute right-0 mt-2 w-56 rounded-xl border border-[var(--border-color)] bg-[var(--bg-card)] p-3 shadow-xl z-50 animate-modal text-xs">
+                    <p className="font-bold text-[var(--text-main)] mb-2 border-b border-[var(--border-color)] pb-1">
+                      {isIndo ? "Kontak" : "Contacts"}
+                    </p>
+                    <a
+                      href={`mailto:${data.contact.email}`}
+                      className="flex items-center gap-2 py-1 text-[var(--text-muted)] hover:text-[var(--hover-gray)]"
+                    >
+                      <Mail size={14} />
+                      <span className="truncate">{data.contact.email}</span>
+                    </a>
+                    <a
+                      href={`tel:${data.contact.phone}`}
+                      className="flex items-center gap-2 py-1 text-[var(--text-muted)] hover:text-[var(--hover-gray)]"
+                    >
+                      <Phone size={14} />
+                      <span>{data.contact.phone}</span>
+                    </a>
+                  </div>
+                )}
+              </div>
             </div>
             <div className="flex items-center gap-8 border-b border-[var(--border-color)] pt-3 font-montserrat font-black text-sm text-[var(--text-main)]">
               <button
