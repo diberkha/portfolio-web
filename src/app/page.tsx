@@ -168,19 +168,16 @@ export default function Home() {
   const categories = ["All", "Web Apps", "CMS"];
   const fullBio = isIndo ? data.profile.summary.id : data.profile.summary.en;
   const projectBackgroundColors = [
-    "#FCA5A5",
-    "#FDBA74",
-    "#FDE68A",
-    "#86EFAC",
-    "#93C5FD",
-    "#C4B5FD",
-    "#D8B4FE",
+    "#FECACA", // Merah
+    "#FED7AA", // Jingga
+    "#FEF08A", // Kuning
+    "#BBF7D0", // Hijau
+    "#BFDBFE", // Biru
+    "#C7D2FE", // Nila
+    "#E9D5FF", // Ungu
   ];
-  const projectTimeOrder = [6, 5, 4, 3, 2, 1];
   const getProjectBackgroundColor = (projectId: number) => {
-    const timeIndex = projectTimeOrder.indexOf(projectId);
-    const paletteIndex = timeIndex >= 0 ? timeIndex : projectId - 1;
-    return projectBackgroundColors[paletteIndex % projectBackgroundColors.length];
+    return projectBackgroundColors[Math.max(0, data.projects.length - projectId) % projectBackgroundColors.length];
   };
   return (
     <div
@@ -467,7 +464,10 @@ export default function Home() {
                       style={{ animationDelay: `${i * 40}ms`, opacity: 0 }}
                     >
                       <div className="space-y-3">
-                        <div className="aspect-square w-full rounded-xl border border-[var(--border-color)] flex items-center justify-center text-white shadow-xs group-hover:scale-102 transition overflow-hidden bg-white">
+                        <div className="aspect-square w-full rounded-xl border border-[var(--border-color)] flex items-center justify-center text-white shadow-xs group-hover:scale-102 transition overflow-hidden bg-white relative">
+                          <span className="absolute top-1.5 left-1.5 rounded bg-black/75 px-1.5 py-0.5 text-[7px] sm:text-[8px] font-black text-white backdrop-blur-md z-10">
+                            {exp.type}
+                          </span>
                           {exp.image ? (
                             <Image
                               src={exp.image}
@@ -557,23 +557,23 @@ export default function Home() {
                             {project.badgePrefix}
                           </span>
                         </div>
-                        <div className="p-4 space-y-2">
-                          <h3 className="font-montserrat text-base font-black text-[var(--text-main)] group-hover:text-[var(--hover-gray)] transition line-clamp-1">
+                        <div className="p-2.5 sm:p-4 space-y-1.5 sm:space-y-2">
+                          <h3 className="font-montserrat text-xs sm:text-base font-black text-[var(--text-main)] group-hover:text-[var(--hover-gray)] transition line-clamp-1">
                             {project.title}
                           </h3>
                           {project.demoUrl && (
-                            <p className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 min-w-0">
+                            <p className="text-[9px] sm:text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 min-w-0">
                               <Globe size={11} className="flex-shrink-0" />
                               <span className="truncate">
                                 {project.demoUrl.replace(/^https?:\/\//, "")}
                               </span>
                             </p>
                           )}
-                          <div className="flex flex-wrap gap-1.5 pt-1">
+                          <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5 sm:pt-1">
                             {project.stack.map((stk) => (
                               <span
                                 key={stk}
-                                className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-2 py-0.5 text-[10px] font-black text-[var(--text-muted)]"
+                                className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-black text-[var(--text-muted)]"
                               >
                                 <span style={{ color: getTechBrandStyle(stk).color }} className="flex items-center justify-center">
                                   <TechIcon name={stk} size={10} />
@@ -584,8 +584,8 @@ export default function Home() {
                           </div>
                         </div>
                       </div>
-                      <div className="border-t border-[var(--border-color)] bg-[var(--bg-main)] px-3 py-2 flex items-center justify-between gap-1 text-xs font-bold text-[var(--text-muted)]">
-                        <span className="flex items-center gap-1 text-[10px] leading-tight">
+                      <div className="border-t border-[var(--border-color)] bg-[var(--bg-main)] px-2.5 sm:px-3 py-1.5 sm:py-2 flex items-center justify-between gap-1 text-xs font-bold text-[var(--text-muted)]">
+                        <span className="flex items-center gap-1 text-[8px] sm:text-[10px] leading-tight">
                           <Calendar size={11} className="flex-shrink-0" />
                           <span>
                             {isIndo
@@ -593,7 +593,7 @@ export default function Home() {
                               : project.createdDate.en}
                           </span>
                         </span>
-                        <span className="text-[var(--roblox-blue)] group-hover:translate-x-0.5 transition flex items-center gap-0.5 text-[11px] whitespace-nowrap flex-shrink-0">
+                        <span className="text-[var(--roblox-blue)] group-hover:translate-x-0.5 transition flex items-center gap-0.5 text-[9px] sm:text-[11px] whitespace-nowrap flex-shrink-0">
                           {isIndo ? "Rincian" : "Details"}
                           <ChevronRight size={13} />
                         </span>
@@ -716,23 +716,23 @@ export default function Home() {
                           {project.badgePrefix}
                         </span>
                       </div>
-                      <div className="p-4 space-y-2">
-                        <h3 className="font-montserrat text-base font-black text-[var(--text-main)] group-hover:text-[var(--hover-gray)] transition line-clamp-1">
+                      <div className="p-2.5 sm:p-4 space-y-1.5 sm:space-y-2">
+                        <h3 className="font-montserrat text-xs sm:text-base font-black text-[var(--text-main)] group-hover:text-[var(--hover-gray)] transition line-clamp-1">
                           {project.title}
                         </h3>
                         {project.demoUrl && (
-                          <p className="text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 min-w-0">
+                          <p className="text-[9px] sm:text-[11px] font-extrabold text-emerald-600 dark:text-emerald-400 flex items-center gap-1 min-w-0">
                             <Globe size={11} className="flex-shrink-0" />
                             <span className="truncate">
                               {project.demoUrl.replace(/^https?:\/\//, "")}
                             </span>
                           </p>
                         )}
-                        <div className="flex flex-wrap gap-1.5 pt-1">
+                        <div className="flex flex-wrap gap-1 sm:gap-1.5 pt-0.5 sm:pt-1">
                           {project.stack.map((stk) => (
                             <span
                               key={stk}
-                              className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-2 py-0.5 text-[10px] font-black text-[var(--text-muted)]"
+                              className="inline-flex items-center gap-1 rounded-md border border-[var(--border-color)] bg-[var(--bg-main)] px-1.5 sm:px-2 py-0.5 text-[8px] sm:text-[10px] font-black text-[var(--text-muted)]"
                             >
                               <span style={{ color: getTechBrandStyle(stk).color }} className="flex items-center justify-center">
                                 <TechIcon name={stk} size={10} />
@@ -743,8 +743,8 @@ export default function Home() {
                         </div>
                       </div>
                     </div>
-                    <div className="border-t border-[var(--border-color)] bg-[var(--bg-main)] px-3 py-2 flex items-center justify-between gap-1 text-xs font-bold text-[var(--text-muted)]">
-                      <span className="flex items-center gap-1 text-[10px] leading-tight">
+                    <div className="border-t border-[var(--border-color)] bg-[var(--bg-main)] px-2.5 sm:px-3 py-1.5 sm:py-2 flex items-center justify-between gap-1 text-xs font-bold text-[var(--text-muted)]">
+                      <span className="flex items-center gap-1 text-[8px] sm:text-[10px] leading-tight">
                         <Calendar size={11} className="flex-shrink-0" />
                         <span>
                           {isIndo
@@ -752,7 +752,7 @@ export default function Home() {
                             : project.createdDate.en}
                         </span>
                       </span>
-                      <span className="text-[var(--roblox-blue)] group-hover:translate-x-0.5 transition flex items-center gap-0.5 text-[11px] whitespace-nowrap flex-shrink-0">
+                      <span className="text-[var(--roblox-blue)] group-hover:translate-x-0.5 transition flex items-center gap-0.5 text-[9px] sm:text-[11px] whitespace-nowrap flex-shrink-0">
                         {isIndo ? "Rincian" : "Details"}
                         <ChevronRight size={13} />
                       </span>
@@ -791,6 +791,7 @@ export default function Home() {
         project={selectedProject}
         onClose={() => setSelectedProject(null)}
         lang={language}
+        totalProjects={data.projects.length}
       />
     </div>
   );

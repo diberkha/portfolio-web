@@ -11,21 +11,20 @@ interface ProjectModalProps {
   project: Project | null;
   onClose: () => void;
   lang?: "English" | "Bahasa Indonesia";
+  totalProjects: number;
 }
 
 const projectBackgroundColors = [
-  "#FCA5A5",
-  "#FDBA74",
-  "#FDE68A",
-  "#86EFAC",
-  "#93C5FD",
-  "#C4B5FD",
-  "#D8B4FE",
+  "#FECACA", // Merah
+  "#FED7AA", // Jingga
+  "#FEF08A", // Kuning
+  "#BBF7D0", // Hijau
+  "#BFDBFE", // Biru
+  "#C7D2FE", // Nila
+  "#E9D5FF", // Ungu
 ];
 
-const projectTimeOrder = [6, 5, 4, 3, 2, 1];
-
-export default function ProjectModal({ project, onClose, lang = "English" }: ProjectModalProps) {
+export default function ProjectModal({ project, onClose, lang = "English", totalProjects }: ProjectModalProps) {
   const [previewIndex, setPreviewIndex] = useState(0);
 
   if (!project) return null;
@@ -33,8 +32,8 @@ export default function ProjectModal({ project, onClose, lang = "English" }: Pro
   const isIndo = lang === "Bahasa Indonesia";
   const previewImages = project.previewImages ?? [];
   const canNavigatePreview = previewImages.length > 1;
-  const timeIndex = projectTimeOrder.indexOf(project.id);
-  const backgroundColor = projectBackgroundColors[(timeIndex >= 0 ? timeIndex : project.id - 1) % projectBackgroundColors.length];
+  
+  const backgroundColor = projectBackgroundColors[Math.max(0, totalProjects - project.id) % projectBackgroundColors.length];
 
   const prevPreview = () => setPreviewIndex((i) => (i - 1 + previewImages.length) % previewImages.length);
   const nextPreview = () => setPreviewIndex((i) => (i + 1) % previewImages.length);
